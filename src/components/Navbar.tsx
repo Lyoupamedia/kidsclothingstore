@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 
 const STORE_URL = "https://zinababy.shop";
 const BRAND = "KidsClothing";
 
 const navLinks = [
-  { label: "الصفحة الرئيسية", href: "#" },
-  { label: "المنتجات", href: `${STORE_URL}/collections/all` },
-  { label: "اتصل بنا", href: "#contact" },
+  { label: "الصفحة الرئيسية", href: "/", isInternal: true },
+  { label: "المنتجات", href: "/products", isInternal: true },
+  { label: "اتصل بنا", href: "#contact", isInternal: false },
 ];
 
 export function Navbar() {
@@ -34,15 +35,25 @@ export function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-muted-foreground hover:text-primary transition-colors font-medium"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.isInternal ? (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className="text-muted-foreground hover:text-primary transition-colors font-medium"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-primary transition-colors font-medium"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
           </div>
 
           {/* CTA */}
@@ -87,16 +98,27 @@ export function Navbar() {
             className="md:hidden overflow-hidden bg-card border-t border-border"
           >
             <div className="px-4 py-4 flex flex-col gap-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="py-2 text-foreground font-medium hover:text-primary transition-colors"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) =>
+                link.isInternal ? (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className="py-2 text-foreground font-medium hover:text-primary transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="py-2 text-foreground font-medium hover:text-primary transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                )
+              )}
               <a
                 href={`${STORE_URL}/collections/all`}
                 className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold"
