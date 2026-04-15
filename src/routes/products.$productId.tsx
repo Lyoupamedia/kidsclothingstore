@@ -141,14 +141,14 @@ function ProductPage() {
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
-                  placeholder="الاسم الكامل - Nom complet"
+                  placeholder="الاسم الكامل"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="col-span-1 w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
                 />
                 <input
                   type="tel"
-                  placeholder="الهاتف - Téléphone"
+                  placeholder="الهاتف"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="col-span-1 w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
@@ -156,7 +156,7 @@ function ProductPage() {
               </div>
               <input
                 type="text"
-                placeholder="العنوان - Address"
+                placeholder="العنوان"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
