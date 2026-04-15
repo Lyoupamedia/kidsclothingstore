@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
 import productsShowcase from "@/assets/products-showcase.jpg";
+import productRomper from "@/assets/product-romper.jpg";
+import productDress from "@/assets/product-dress.jpg";
+import productCasual from "@/assets/product-casual.jpg";
+import productFashion from "@/assets/product-fashion.jpg";
 
 const STORE_URL = "https://zinababy.shop";
 
