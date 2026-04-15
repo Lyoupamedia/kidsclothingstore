@@ -5,25 +5,36 @@ const STORE_URL = "https://zinababy.shop";
 
 const products = [
   {
-    name: "رومبير قطني مريح",
+    name: "رومبير قطني للرضع",
+    description: "قطن طبيعي 100% ناعم على بشرة طفلك، مثالي لجميع الفصول",
     price: "89",
     oldPrice: "149",
     image: "https://cdn.youcan.shop/stores/deff055ee1f5ddfccc9a6ad6e9043a5b/others/fRF6nUS9VUAFYEXwOEPD5tOZgxumnaHzTrzdPpuO.jpg",
     badge: "الأكثر مبيعاً",
   },
   {
-    name: "فستان صيفي أنيق",
+    name: "فستان صيفي بناتي",
+    description: "تصميم أنيق بألوان زاهية، مريح للعب والخروجات",
     price: "99",
     oldPrice: "179",
     image: "https://cdn.youcan.shop/stores/deff055ee1f5ddfccc9a6ad6e9043a5b/others/rVynMXoFXsRhw11hig4hw3wGGN5hvA2dUOH2r89S.jpg",
     badge: "جديد",
   },
   {
-    name: "طقم أطفال كاجوال",
+    name: "طقم كاجوال للأطفال",
+    description: "طقم عصري من قطعتين، مناسب للمدرسة والنزهات",
     price: "119",
     oldPrice: "199",
     image: "https://cdn.youcan.shop/stores/deff055ee1f5ddfccc9a6ad6e9043a5b/others/o9XOSMdQM6xavVeZsR4mX8B21V8PqytwdgUufqQp.jpg",
     badge: "عرض خاص",
+  },
+  {
+    name: "طقم موضة أنيق",
+    description: "تشكيلة عصرية بخامات ممتازة تدوم طويلاً",
+    price: "139",
+    oldPrice: "219",
+    image: "https://cdn.youcan.shop/stores/deff055ee1f5ddfccc9a6ad6e9043a5b/others/mpNcn2pnj6xN0eehEGIKz824gG3UPckMzT5z7a3C.jpg",
+    badge: "حصري",
   },
 ];
 
