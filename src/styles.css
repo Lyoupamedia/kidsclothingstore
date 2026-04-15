@@ -5,27 +5,27 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: 'Noto Kufi Arabic';
+  font-family: 'Changa';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.gstatic.com/s/notokufiarabic/v21/CSRp4ydQnPyaDxEXLFF6LZVLKrodhu8t57o1kDc5Wh5v3obPnLSmf5yD.woff2') format('woff2');
+  src: url('https://fonts.gstatic.com/s/changa/v27/2-c79JNi2YuVOUcOarRPgnNGooxCZy2xQjDp9htf1ZM.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Noto Kufi Arabic';
+  font-family: 'Changa';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('https://fonts.gstatic.com/s/notokufiarabic/v21/CSRp4ydQnPyaDxEXLFF6LZVLKrodhu8t57o1kDc5Wh5v3obPnLSmAZuD.woff2') format('woff2');
+  src: url('https://fonts.gstatic.com/s/changa/v27/2-c79JNi2YuVOUcOarRPgnNGooxCZ62-QjDp9htf1ZM.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Noto Kufi Arabic';
+  font-family: 'Changa';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('https://fonts.gstatic.com/s/notokufiarabic/v21/CSRp4ydQnPyaDxEXLFF6LZVLKrodhu8t57o1kDc5Wh5v3obPnLSmKJuD.woff2') format('woff2');
+  src: url('https://fonts.gstatic.com/s/changa/v27/2-c79JNi2YuVOUcOarRPgnNGooxCZ5S-QjDp9htf1ZM.woff2') format('woff2');
 }
 
 @theme inline {
@@ -79,7 +79,7 @@
 
 :root {
   --radius: 0.75rem;
-  --font-family-sans: 'Noto Kufi Arabic', system-ui, sans-serif;
+  --font-family-sans: 'Changa', system-ui, sans-serif;
 
   /* Core palette - playful kids vibe */
   --background: oklch(0.98 0.01 240);
