@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import productsShowcase from "@/assets/products-showcase.jpg";
 import productRomper from "@/assets/product-romper.jpg";
 import productDress from "@/assets/product-dress.jpg";
