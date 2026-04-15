@@ -8,7 +8,7 @@ const BRAND = "KidsClothing";
 const navLinks = [
   { label: "الصفحة الرئيسية", href: "/", isInternal: true },
   { label: "المنتجات", href: "/products", isInternal: true },
-  { label: "اتصل بنا", href: "#contact", isInternal: false },
+  { label: "اتصل بنا", href: "/contact", isInternal: true },
 ];
 
 export function Navbar() {
