@@ -1,61 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-
+import { useProduct } from "@/hooks/useProducts";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { Navbar } from "@/components/Navbar";
 import { FooterSection } from "@/components/FooterSection";
-import productRomper from "@/assets/product-romper.jpg";
-import productDress from "@/assets/product-dress.jpg";
-import productCasual from "@/assets/product-casual.jpg";
-import productFashion from "@/assets/product-fashion.jpg";
-
-
-
-const productsData: Record<string, {
-  name: string;
-  description: string;
-  price: number;
-  oldPrice: number;
-  discount: number;
-  image: string;
-  ages: string[];
-}> = {
-  "romper": {
-    name: "رومبير قطني للرضع 💛",
-    description: "قطن طبيعي 100% ناعم على بشرة طفلك، مثالي لجميع الفصول",
-    price: 89,
-    oldPrice: 149,
-    discount: 40,
-    image: productRomper,
-    ages: ["من 0 الى 6 أشهر", "من 6 أشهر الى 12", "من 12 الى 18 شهر", "من 18 الى 24 شهر"],
-  },
-  "dress": {
-    name: "فستان صيفي بناتي 💛",
-    description: "تصميم أنيق بألوان زاهية، مريح للعب والخروجات",
-    price: 99,
-    oldPrice: 179,
-    discount: 45,
-    image: productDress,
-    ages: ["من 3 سنوات الى 4", "من 5 سنوات الى 6", "من 6 سنوات الى 7", "من 8 سنوات الى 9"],
-  },
-  "casual": {
-    name: "طقم كاجوال للأطفال 💛",
-    description: "طقم عصري من قطعتين، مناسب للمدرسة والنزهات",
-    price: 119,
-    oldPrice: 199,
-    discount: 40,
-    image: productCasual,
-    ages: ["من 3 سنوات الى 4", "من 5 سنوات الى 6", "من 6 سنوات الى 7", "من 8 سنوات الى 9", "من 10 سنوات الى 11"],
-  },
-  "fashion": {
-    name: "طقم موضة أنيق 💛",
-    description: "تشكيلة عصرية بخامات ممتازة تدوم طويلاً",
-    price: 139,
-    oldPrice: 219,
-    discount: 35,
-    image: productFashion,
-    ages: ["من 3 سنوات الى 4", "من 5 سنوات الى 6", "من 6 سنوات الى 7", "من 8 سنوات الى 9", "من 10 سنوات الى 11"],
-  },
-};
 
 export const Route = createFileRoute("/products/$productId")({
   component: ProductPage,
@@ -67,28 +15,42 @@ export const Route = createFileRoute("/products/$productId")({
       </div>
     </div>
   ),
-  head: ({ params }) => {
-    const product = productsData[params.productId];
-    const title = product ? `${product.name} - KidsClothing` : "منتج - KidsClothing";
-    const desc = product?.description || "ملابس أطفال بجودة عالية";
-    return {
-      meta: [
-        { title },
-        { name: "description", content: desc },
-        { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-      ],
-    };
-  },
+  head: () => ({
+    meta: [
+      { title: "منتج - KidsClothing" },
+      { name: "description", content: "ملابس أطفال بجودة عالية" },
+    ],
+  }),
 });
 
 function ProductPage() {
   const { productId } = Route.useParams();
-  const product = productsData[productId];
+  const { product, loading } = useProduct(productId);
+  const { settings } = useSiteSettings();
   const [selectedAge, setSelectedAge] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+
+  const whatsappNumber = settings.whatsapp_number || "212672492366";
+
+  if (loading) {
+    return (
+      <div dir="rtl" className="min-h-screen bg-background">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <div className="grid md:grid-cols-2 gap-8 animate-pulse">
+            <div className="space-y-6">
+              <div className="h-32 bg-muted rounded-2xl" />
+              <div className="h-20 bg-muted rounded-2xl" />
+              <div className="h-16 bg-muted rounded-2xl" />
+            </div>
+            <div className="aspect-square bg-muted rounded-2xl" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -101,11 +63,15 @@ function ProductPage() {
     );
   }
 
+  const discount = product.old_price
+    ? Math.round(((product.old_price - product.price) / product.old_price) * 100)
+    : 0;
+
   const handleOrder = () => {
     const message = encodeURIComponent(
       `مرحباً، أريد طلب:\n${product.name}\nالعمر: ${selectedAge || "غير محدد"}\nالاسم: ${name}\nالهاتف: ${phone}\nالعنوان: ${address}`
     );
-    window.open(`https://wa.me/212600000000?text=${message}`, "_blank");
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
   };
 
   return (
@@ -114,14 +80,15 @@ function ProductPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
-          {/* Product Details - Left side */}
+          {/* Product Details */}
           <div className="order-2 md:order-1 space-y-6">
-            {/* Title & Badge */}
             <div className="bg-card rounded-2xl border-2 border-dashed border-primary/30 p-6">
               <div className="flex items-start gap-3 flex-wrap">
-                <span className="inline-block px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs font-bold shrink-0">
-                  عرض خاص!
-                </span>
+                {product.badge && (
+                  <span className="inline-block px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs font-bold shrink-0">
+                    {product.badge}
+                  </span>
+                )}
                 <h1 className="text-xl md:text-2xl font-bold text-foreground leading-relaxed">
                   {product.name}
                 </h1>
@@ -131,34 +98,40 @@ function ProductPage() {
 
             {/* Price */}
             <div className="bg-card rounded-2xl border-2 border-dashed border-border p-5 flex items-center justify-between">
-              <span className="text-muted-foreground line-through text-lg">{product.oldPrice} د.م</span>
+              {product.old_price && (
+                <span className="text-muted-foreground line-through text-lg">{product.old_price} د.م</span>
+              )}
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-full bg-accent text-accent-foreground text-sm font-bold">
-                  تخفيض {product.discount}%-
-                </span>
+                {discount > 0 && (
+                  <span className="px-3 py-1 rounded-full bg-accent text-accent-foreground text-sm font-bold">
+                    تخفيض {discount}%-
+                  </span>
+                )}
                 <span className="text-3xl font-bold text-foreground">{product.price} د.م</span>
               </div>
             </div>
 
             {/* Age Selector */}
-            <div className="space-y-3">
-              <h3 className="text-lg font-bold text-center text-foreground">العمر</h3>
-              <div className="flex flex-wrap justify-center gap-2">
-                {product.ages.map((age) => (
-                  <button
-                    key={age}
-                    onClick={() => setSelectedAge(age)}
-                    className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
-                      selectedAge === age
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-foreground hover:border-primary/50"
-                    }`}
-                  >
-                    {age}
-                  </button>
-                ))}
+            {product.ages && product.ages.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-lg font-bold text-center text-foreground">العمر</h3>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {product.ages.map((age) => (
+                    <button
+                      key={age}
+                      onClick={() => setSelectedAge(age)}
+                      className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                        selectedAge === age
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-card text-foreground hover:border-primary/50"
+                      }`}
+                    >
+                      {age}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Order Form */}
             <div className="bg-card rounded-2xl border-2 border-dashed border-border p-6 space-y-4">
@@ -200,16 +173,22 @@ function ProductPage() {
             </button>
           </div>
 
-          {/* Product Image - Right side */}
+          {/* Product Image */}
           <div className="order-1 md:order-2">
             <div className="sticky top-24 rounded-2xl overflow-hidden bg-card border border-border shadow-[var(--shadow-card)]">
-              <img
-                src={product.image}
-                alt={product.name}
-                width={800}
-                height={800}
-                className="w-full aspect-square object-cover"
-              />
+              {product.image_url ? (
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  width={800}
+                  height={800}
+                  className="w-full aspect-square object-cover"
+                />
+              ) : (
+                <div className="w-full aspect-square flex items-center justify-center text-8xl text-muted-foreground bg-muted">
+                  👕
+                </div>
+              )}
             </div>
           </div>
         </div>
