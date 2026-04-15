@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const STORE_URL = "https://zinababy.shop";
+const BRAND = "KidsClothing";
 
 const navLinks = [
   { label: "الصفحة الرئيسية", href: "#" },
@@ -27,8 +28,8 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href={STORE_URL} className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-primary">Zina</span>
-            <span className="text-2xl font-bold text-foreground">BABY</span>
+            <span className="text-2xl font-bold text-primary">Kids</span>
+            <span className="text-2xl font-bold text-foreground">Clothing</span>
           </a>
 
           {/* Desktop nav */}

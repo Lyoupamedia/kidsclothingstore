@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 const testimonials = [
   {
     name: "فاطمة الزهراء",
-    text: "ملابس رائعة وجودة ممتازة! وصل الطلب بسرعة. شكراً ZinaBaby",
+    text: "ملابس رائعة وجودة ممتازة! وصل الطلب بسرعة. شكراً KidsClothing",
     rating: 5,
     city: "الدار البيضاء",
   },
