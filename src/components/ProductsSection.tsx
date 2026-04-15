@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import productsShowcase from "@/assets/products-showcase.jpg";
 import productRomper from "@/assets/product-romper.jpg";
 import productDress from "@/assets/product-dress.jpg";
@@ -9,6 +10,7 @@ const STORE_URL = "https://zinababy.shop";
 
 const products = [
   {
+    slug: "romper",
     name: "رومبير قطني للرضع",
     description: "قطن طبيعي 100% ناعم على بشرة طفلك، مثالي لجميع الفصول",
     price: "89",
@@ -17,6 +19,7 @@ const products = [
     badge: "الأكثر مبيعاً",
   },
   {
+    slug: "dress",
     name: "فستان صيفي بناتي",
     description: "تصميم أنيق بألوان زاهية، مريح للعب والخروجات",
     price: "99",
@@ -25,6 +28,7 @@ const products = [
     badge: "جديد",
   },
   {
+    slug: "casual",
     name: "طقم كاجوال للأطفال",
     description: "طقم عصري من قطعتين، مناسب للمدرسة والنزهات",
     price: "119",
@@ -33,6 +37,7 @@ const products = [
     badge: "عرض خاص",
   },
   {
+    slug: "fashion",
     name: "طقم موضة أنيق",
     description: "تشكيلة عصرية بخامات ممتازة تدوم طويلاً",
     price: "139",
@@ -65,11 +70,14 @@ export function ProductsSection() {
         </motion.div>
 
         {/* Products grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           {products.map((product, index) => (
-            <motion.a
-              key={product.name}
-              href={`${STORE_URL}/collections/all`}
+            <Link
+              key={product.slug}
+              to="/products/$productId"
+              params={{ productId: product.slug }}
+            >
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -106,7 +114,8 @@ export function ProductsSection() {
                   </div>
                 </div>
               </div>
-            </motion.a>
+            </motion.div>
+            </Link>
           ))}
         </div>
 
