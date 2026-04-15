@@ -59,7 +59,7 @@ export function FooterSection() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-background/10 text-center text-background/40 text-sm">
-          © 2025 KidsClothing. جميع الحقوق محفوظة
+          متجر ملابس الأطفال 2026 © - جميع الحقوق محفوظة
         </div>
       </div>
     </footer>
