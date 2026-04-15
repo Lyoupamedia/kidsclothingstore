@@ -1,4 +1,4 @@
-const STORE_URL = "https://zinababy.shop";
+import { Link } from "@tanstack/react-router";
 
 export function FooterSection() {
   return (
@@ -31,10 +31,9 @@ export function FooterSection() {
           <div>
             <h4 className="font-bold text-lg mb-4">روابط سريعة</h4>
             <ul className="space-y-3">
-              <li><a href={STORE_URL} className="text-background/60 hover:text-primary transition-colors">الصفحة الرئيسية</a></li>
-              <li><a href={`${STORE_URL}/collections/all`} className="text-background/60 hover:text-primary transition-colors">جميع المنتجات</a></li>
-              <li><a href={STORE_URL} className="text-background/60 hover:text-primary transition-colors">سياسة الإرجاع</a></li>
-              <li><a href={STORE_URL} className="text-background/60 hover:text-primary transition-colors">الشروط والأحكام</a></li>
+              <li><Link to="/" className="text-background/60 hover:text-primary transition-colors">الصفحة الرئيسية</Link></li>
+              <li><Link to="/products" className="text-background/60 hover:text-primary transition-colors">جميع المنتجات</Link></li>
+              <li><Link to="/contact" className="text-background/60 hover:text-primary transition-colors">اتصل بنا</Link></li>
             </ul>
           </div>
 
