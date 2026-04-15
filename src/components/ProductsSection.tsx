@@ -70,16 +70,24 @@ export function ProductsSection() {
         </motion.div>
 
         {/* Products grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
           {products.map((product, index) => (
-            <motion.a
-              key={product.name}
-              href={`${STORE_URL}/collections/all`}
+            <Link
+              key={product.slug}
+              to="/products/$productId"
+              params={{ productId: product.slug }}
+            >
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.15, duration: 0.5 }}
               className="group block"
+            >
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
             >
               <div className="relative overflow-hidden rounded-2xl bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-300">
                 {/* Badge */}
@@ -111,7 +119,8 @@ export function ProductsSection() {
                   </div>
                 </div>
               </div>
-            </motion.a>
+            </motion.div>
+            </Link>
           ))}
         </div>
 
