@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-
-const BRAND = "KidsClothing";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const navLinks = [
   { label: "الصفحة الرئيسية", href: "/", isInternal: true },
@@ -12,6 +11,9 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { settings } = useSiteSettings();
+
+  const announcementText = settings.announcement_text || "عرض خاص: شحن مجاني في جميع أنحاء المملكة!";
 
   return (
     <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border">
@@ -21,7 +23,7 @@ export function Navbar() {
           {[...Array(3)].map((_, i) => (
             <span key={i} className="flex items-center gap-3">
               <span>🎉</span>
-              <span>عرض خاص: شحن مجاني في جميع أنحاء المملكة!</span>
+              <span>{announcementText}</span>
               <span>🎉</span>
             </span>
           ))}
@@ -30,37 +32,23 @@ export function Navbar() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold text-primary">Kids</span>
             <span className="text-2xl font-bold text-foreground">Clothing</span>
           </Link>
 
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) =>
-              link.isInternal ? (
-                <Link
-                  key={link.label}
-                  to={link.href}
-                  className="text-muted-foreground hover:text-primary transition-colors font-medium"
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-primary transition-colors font-medium"
-                >
-                  {link.label}
-                </a>
-              )
-            )}
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="text-muted-foreground hover:text-primary transition-colors font-medium"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-
-          {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 text-foreground"
@@ -81,7 +69,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -91,27 +78,16 @@ export function Navbar() {
             className="md:hidden overflow-hidden bg-card border-t border-border"
           >
             <div className="px-4 py-4 flex flex-col gap-3">
-              {navLinks.map((link) =>
-                link.isInternal ? (
-                  <Link
-                    key={link.label}
-                    to={link.href}
-                    className="py-2 text-foreground font-medium hover:text-primary transition-colors"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ) : (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="py-2 text-foreground font-medium hover:text-primary transition-colors"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                )
-              )}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className="py-2 text-foreground font-medium hover:text-primary transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Link
                 to="/products"
                 className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold"

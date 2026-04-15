@@ -1,6 +1,13 @@
 import { Link } from "@tanstack/react-router";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 export function FooterSection() {
+  const { settings } = useSiteSettings();
+
+  const email = settings.contact_email || "contact@kidsclothing.shop";
+  const phone = settings.contact_phone || "+212 672 492 366";
+  const address = settings.contact_address || "المملكة المغربية";
+
   return (
     <footer id="contact" className="bg-foreground text-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -32,15 +39,15 @@ export function FooterSection() {
             <ul className="space-y-3 text-background/60">
               <li className="flex items-center gap-3">
                 <span>📧</span>
-                <span>contact@kidsclothing.shop</span>
+                <span>{email}</span>
               </li>
               <li className="flex items-center gap-3">
                 <span>📱</span>
-                <span dir="ltr">+212 672 492 366</span>
+                <span dir="ltr">{phone}</span>
               </li>
               <li className="flex items-center gap-3">
                 <span>📍</span>
-                <span>المملكة المغربية</span>
+                <span>{address}</span>
               </li>
             </ul>
           </div>
