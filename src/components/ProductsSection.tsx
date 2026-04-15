@@ -10,6 +10,7 @@ const STORE_URL = "https://zinababy.shop";
 
 const products = [
   {
+    slug: "romper",
     name: "رومبير قطني للرضع",
     description: "قطن طبيعي 100% ناعم على بشرة طفلك، مثالي لجميع الفصول",
     price: "89",
@@ -18,6 +19,7 @@ const products = [
     badge: "الأكثر مبيعاً",
   },
   {
+    slug: "dress",
     name: "فستان صيفي بناتي",
     description: "تصميم أنيق بألوان زاهية، مريح للعب والخروجات",
     price: "99",
@@ -26,6 +28,7 @@ const products = [
     badge: "جديد",
   },
   {
+    slug: "casual",
     name: "طقم كاجوال للأطفال",
     description: "طقم عصري من قطعتين، مناسب للمدرسة والنزهات",
     price: "119",
@@ -34,6 +37,7 @@ const products = [
     badge: "عرض خاص",
   },
   {
+    slug: "fashion",
     name: "طقم موضة أنيق",
     description: "تشكيلة عصرية بخامات ممتازة تدوم طويلاً",
     price: "139",
