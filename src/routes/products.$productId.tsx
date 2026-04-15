@@ -113,12 +113,7 @@ function ProductPage() {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start"
-        >
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Product Details - Left side */}
           <div className="order-2 md:order-1 space-y-6">
             {/* Title & Badge */}
