@@ -6,7 +6,7 @@ import productDress from "@/assets/product-dress.jpg";
 import productCasual from "@/assets/product-casual.jpg";
 import productFashion from "@/assets/product-fashion.jpg";
 
-const STORE_URL = "https://zinababy.shop";
+
 
 const products = [
   {
@@ -142,13 +142,13 @@ export function ProductsSection() {
               <p className="text-primary-foreground/80 mb-6 max-w-sm">
                 تخفيضات تصل إلى 50% على مجموعة مختارة
               </p>
-              <a
-                href={`${STORE_URL}/collections/all`}
+              <Link
+                to="/products"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-bold hover:opacity-90 transition-opacity"
               >
                 استعراض المزيد
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-              </a>
+              </Link>
             </div>
           </div>
         </motion.div>

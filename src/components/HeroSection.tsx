@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import heroBaby from "@/assets/hero-baby.jpg";
 
-const STORE_URL = "https://zinababy.shop";
+
 
 export function HeroSection() {
   return (
@@ -36,19 +37,19 @@ export function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
-              <a
-                href={`${STORE_URL}/collections/all`}
+              <Link
+                to="/products"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-lg shadow-[var(--shadow-elevated)] hover:opacity-90 transition-all"
               >
                 تسوق الآن
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-              </a>
-              <a
-                href={`${STORE_URL}/collections/all`}
+              </Link>
+              <Link
+                to="/products"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border-2 border-primary text-primary font-bold text-lg hover:bg-secondary transition-colors"
               >
                 العروض الجديدة
-              </a>
+              </Link>
             </div>
           </motion.div>
 
