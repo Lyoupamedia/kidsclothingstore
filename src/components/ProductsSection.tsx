@@ -90,9 +90,12 @@ export function ProductsSection() {
 
                 {/* Info */}
                 <div className="p-5">
-                  <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
                     {product.name}
                   </h3>
+                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                    {product.description}
+                  </p>
                   <div className="flex items-center gap-3">
                     <span className="text-xl font-bold text-primary">{product.price} د.م</span>
                     <span className="text-sm text-muted-foreground line-through">{product.oldPrice} د.م</span>
