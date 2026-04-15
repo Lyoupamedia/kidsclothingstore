@@ -18,10 +18,14 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border">
       {/* Announcement bar */}
       <div className="bg-primary overflow-hidden">
-        <div className="flex items-center justify-center gap-3 py-2 px-4 text-primary-foreground text-sm font-semibold">
-          <span>🎉</span>
-          <span>عرض خاص: شحن مجاني في جميع أنحاء المملكة!</span>
-          <span>🎉</span>
+        <div className="animate-[marquee_15s_linear_infinite] flex items-center gap-8 py-2 px-4 text-primary-foreground text-sm font-semibold whitespace-nowrap">
+          {[...Array(3)].map((_, i) => (
+            <span key={i} className="flex items-center gap-3">
+              <span>🎉</span>
+              <span>عرض خاص: شحن مجاني في جميع أنحاء المملكة!</span>
+              <span>🎉</span>
+            </span>
+          ))}
         </div>
       </div>
 
