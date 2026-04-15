@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { motion } from "framer-motion";
+
 import { Navbar } from "@/components/Navbar";
 import { FooterSection } from "@/components/FooterSection";
 import productRomper from "@/assets/product-romper.jpg";
