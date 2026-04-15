@@ -26,6 +26,7 @@ function Index() {
       <HeroSection />
       <FeaturesSection />
       <ProductsSection />
+      <CountdownSection />
       <TestimonialsSection />
       <FooterSection />
     </div>
