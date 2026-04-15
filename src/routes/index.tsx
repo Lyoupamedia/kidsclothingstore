@@ -1,26 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Navbar } from "@/components/Navbar";
+import { HeroSection } from "@/components/HeroSection";
+import { FeaturesSection } from "@/components/FeaturesSection";
+import { ProductsSection } from "@/components/ProductsSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { FooterSection } from "@/components/FooterSection";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "ZinaBaby - ملابس أطفال بجودة عالية وأسعار مناسبة" },
+      { name: "description", content: "متجر ZinaBaby لملابس الأطفال - شحن مجاني لجميع أنحاء المملكة المغربية. اكتشف تشكيلتنا الحصرية بأسعار لا تقاوم." },
+      { property: "og:title", content: "ZinaBaby - ملابس أطفال بجودة عالية" },
+      { property: "og:description", content: "متجر متخصص في ملابس الأطفال بجودة عالية وأسعار مناسبة مع شحن مجاني" },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
+function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div dir="rtl" className="min-h-screen bg-background">
+      <Navbar />
+      <HeroSection />
+      <FeaturesSection />
+      <ProductsSection />
+      <TestimonialsSection />
+      <FooterSection />
     </div>
   );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
 }
