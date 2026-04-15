@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-
-
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 function useCountdown() {
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
@@ -40,6 +39,10 @@ function TimeBox({ value, label }: { value: number; label: string }) {
 
 export function CountdownSection() {
   const { hours, minutes, seconds } = useCountdown();
+  const { settings } = useSiteSettings();
+
+  const title = settings.countdown_title || "لا تفوّت الفرصة!";
+  const subtitle = settings.countdown_subtitle || "تخفيضات حصرية تنتهي اليوم — استفد قبل فوات الأوان";
 
   return (
     <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
@@ -60,10 +63,10 @@ export function CountdownSection() {
           </span>
 
           <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground mb-2">
-            لا تفوّت الفرصة!
+            {title}
           </h2>
           <p className="text-primary-foreground/80 mb-8 text-lg">
-            تخفيضات حصرية تنتهي اليوم — استفد قبل فوات الأوان
+            {subtitle}
           </p>
 
           <div className="flex items-center justify-center gap-3 md:gap-5 mb-8" dir="ltr">
