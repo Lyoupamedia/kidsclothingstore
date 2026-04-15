@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 
 
 
@@ -73,13 +74,13 @@ export function CountdownSection() {
             <TimeBox value={seconds} label="ثانية" />
           </div>
 
-          <a
-            href={`${STORE_URL}/collections/all`}
+          <Link
+            to="/products"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-background text-primary font-bold text-lg shadow-[var(--shadow-elevated)] hover:scale-105 transition-transform"
           >
             تسوق الآن قبل انتهاء العرض
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
