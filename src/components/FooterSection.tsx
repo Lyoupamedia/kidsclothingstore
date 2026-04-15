@@ -47,7 +47,7 @@ export function FooterSection() {
               </li>
               <li className="flex items-center gap-3">
                 <span>📱</span>
-                <span dir="ltr">+212 600 000 000</span>
+                <span dir="ltr">+212 672 492 366</span>
               </li>
               <li className="flex items-center gap-3">
                 <span>📍</span>
