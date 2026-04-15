@@ -11,9 +11,9 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "ZinaBaby - ملابس أطفال بجودة عالية وأسعار مناسبة" },
-      { name: "description", content: "متجر ZinaBaby لملابس الأطفال - شحن مجاني لجميع أنحاء المملكة المغربية. اكتشف تشكيلتنا الحصرية بأسعار لا تقاوم." },
-      { property: "og:title", content: "ZinaBaby - ملابس أطفال بجودة عالية" },
+      { title: "KidsClothing - ملابس أطفال بجودة عالية وأسعار مناسبة" },
+      { name: "description", content: "متجر KidsClothing لملابس الأطفال - شحن مجاني لجميع أنحاء المملكة المغربية. اكتشف تشكيلتنا الحصرية بأسعار لا تقاوم." },
+      { property: "og:title", content: "KidsClothing - ملابس أطفال بجودة عالية" },
       { property: "og:description", content: "متجر متخصص في ملابس الأطفال بجودة عالية وأسعار مناسبة مع شحن مجاني" },
     ],
   }),

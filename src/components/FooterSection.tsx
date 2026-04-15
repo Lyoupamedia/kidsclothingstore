@@ -8,8 +8,8 @@ export function FooterSection() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl font-bold text-primary">Zina</span>
-              <span className="text-2xl font-bold text-background">BABY</span>
+              <span className="text-2xl font-bold text-primary">Kids</span>
+              <span className="text-2xl font-bold text-background">Clothing</span>
             </div>
             <p className="text-background/60 mb-6 leading-relaxed">
               متجر متخصص في ملابس الأطفال بجودة عالية وأسعار مناسبة. شحن مجاني لجميع أنحاء المملكة.
@@ -44,7 +44,7 @@ export function FooterSection() {
             <ul className="space-y-3 text-background/60">
               <li className="flex items-center gap-3">
                 <span>📧</span>
-                <span>contact@zinababy.shop</span>
+                <span>contact@kidsclothing.shop</span>
               </li>
               <li className="flex items-center gap-3">
                 <span>📱</span>
@@ -59,7 +59,7 @@ export function FooterSection() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-background/10 text-center text-background/40 text-sm">
-          © 2025 ZinaBaby. جميع الحقوق محفوظة
+          © 2025 KidsClothing. جميع الحقوق محفوظة
         </div>
       </div>
     </footer>

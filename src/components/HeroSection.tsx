@@ -63,7 +63,7 @@ export function HeroSection() {
               <div className="absolute -inset-4 bg-primary/10 rounded-3xl rotate-3" />
               <img
                 src={heroBaby}
-                alt="ملابس أطفال ZinaBaby"
+                alt="ملابس أطفال KidsClothing"
                 width={1920}
                 height={1080}
                 className="relative rounded-3xl shadow-[var(--shadow-elevated)] w-full object-cover aspect-[16/10]"
