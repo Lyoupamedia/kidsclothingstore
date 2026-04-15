@@ -4,6 +4,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { ProductsSection } from "@/components/ProductsSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { CountdownSection } from "@/components/CountdownSection";
 import { FooterSection } from "@/components/FooterSection";
 
 export const Route = createFileRoute("/")({
