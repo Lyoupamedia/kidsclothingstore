@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 
 const STORE_URL = "https://zinababy.shop";
 const BRAND = "KidsClothing";
 
 const navLinks = [
-  { label: "الصفحة الرئيسية", href: "#" },
-  { label: "المنتجات", href: `${STORE_URL}/collections/all` },
-  { label: "اتصل بنا", href: "#contact" },
+  { label: "الصفحة الرئيسية", href: "/", isInternal: true },
+  { label: "المنتجات", href: "/products", isInternal: true },
+  { label: "اتصل بنا", href: "#contact", isInternal: false },
 ];
 
 export function Navbar() {
