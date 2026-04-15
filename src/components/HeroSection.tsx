@@ -20,7 +20,7 @@ export function HeroSection() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold mb-6">
               <span>⭐</span>
-              <span>+25,000 عميل راضٍ عنا</span>
+              <span>+5,000 عميل راضٍ عنا</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6">
