@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import heroBaby from "@/assets/hero-baby.jpg";
 
-const STORE_URL = "https://zinababy.shop";
+
 
 export function HeroSection() {
   return (

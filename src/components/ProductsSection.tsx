@@ -6,7 +6,7 @@ import productDress from "@/assets/product-dress.jpg";
 import productCasual from "@/assets/product-casual.jpg";
 import productFashion from "@/assets/product-fashion.jpg";
 
-const STORE_URL = "https://zinababy.shop";
+
 
 const products = [
   {

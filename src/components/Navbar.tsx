@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 
-const STORE_URL = "https://zinababy.shop";
 const BRAND = "KidsClothing";
 
 const navLinks = [
