@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 const testimonials = [
   {
     name: "فاطمة الزهراء",
@@ -25,12 +23,7 @@ export function TestimonialsSection() {
   return (
     <section className="py-16 md:py-24 bg-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <span className="inline-block px-4 py-1 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold mb-4">
             💬 آراء عملائنا
           </span>
@@ -38,19 +31,14 @@ export function TestimonialsSection() {
             ماذا يقول عملاؤنا؟
           </h2>
           <p className="text-muted-foreground text-lg">+25,000 عميل سعيد بتجربتهم معنا</p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
+          {testimonials.map((testimonial) => (
+            <div
               key={testimonial.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
               className="p-6 rounded-2xl bg-background border border-border"
             >
-              {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
                   <span key={i} className="text-accent text-lg">⭐</span>
@@ -66,7 +54,7 @@ export function TestimonialsSection() {
                   <p className="text-muted-foreground text-xs">{testimonial.city}</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

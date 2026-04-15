@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
@@ -52,39 +51,32 @@ export function CountdownSection() {
       </div>
 
       <div className="relative max-w-4xl mx-auto px-4 py-12 md:py-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+        <span className="inline-block px-4 py-1 rounded-full bg-background/20 text-primary-foreground text-sm font-bold mb-4">
+          ⏳ عرض محدود
+        </span>
+
+        <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground mb-2">
+          {title}
+        </h2>
+        <p className="text-primary-foreground/80 mb-8 text-lg">
+          {subtitle}
+        </p>
+
+        <div className="flex items-center justify-center gap-3 md:gap-5 mb-8" dir="ltr">
+          <TimeBox value={hours} label="ساعة" />
+          <span className="text-primary-foreground text-3xl font-bold mb-4">:</span>
+          <TimeBox value={minutes} label="دقيقة" />
+          <span className="text-primary-foreground text-3xl font-bold mb-4">:</span>
+          <TimeBox value={seconds} label="ثانية" />
+        </div>
+
+        <Link
+          to="/products"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-background text-primary font-bold text-lg shadow-[var(--shadow-elevated)] hover:scale-105 transition-transform"
         >
-          <span className="inline-block px-4 py-1 rounded-full bg-background/20 text-primary-foreground text-sm font-bold mb-4">
-            ⏳ عرض محدود
-          </span>
-
-          <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground mb-2">
-            {title}
-          </h2>
-          <p className="text-primary-foreground/80 mb-8 text-lg">
-            {subtitle}
-          </p>
-
-          <div className="flex items-center justify-center gap-3 md:gap-5 mb-8" dir="ltr">
-            <TimeBox value={hours} label="ساعة" />
-            <span className="text-primary-foreground text-3xl font-bold mb-4">:</span>
-            <TimeBox value={minutes} label="دقيقة" />
-            <span className="text-primary-foreground text-3xl font-bold mb-4">:</span>
-            <TimeBox value={seconds} label="ثانية" />
-          </div>
-
-          <Link
-            to="/products"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-background text-primary font-bold text-lg shadow-[var(--shadow-elevated)] hover:scale-105 transition-transform"
-          >
-            تسوق الآن قبل انتهاء العرض
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          </Link>
-        </motion.div>
+          تسوق الآن قبل انتهاء العرض
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </Link>
       </div>
     </section>
   );

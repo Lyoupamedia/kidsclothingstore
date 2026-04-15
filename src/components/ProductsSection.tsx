@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useProducts } from "@/hooks/useProducts";
 
@@ -9,12 +8,7 @@ export function ProductsSection() {
     <section className="py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <span className="inline-block px-4 py-1 rounded-full bg-secondary text-secondary-foreground text-sm font-semibold mb-4">
             🔥 الأكثر طلباً
           </span>
@@ -24,7 +18,7 @@ export function ProductsSection() {
           <p className="text-muted-foreground text-lg max-w-md mx-auto">
             اكتشف أحدث تشكيلاتنا بأسعار لا تقاوم
           </p>
-        </motion.div>
+        </div>
 
         {/* Loading skeleton */}
         {loading ? (
@@ -43,19 +37,13 @@ export function ProductsSection() {
         ) : (
           /* Products grid */
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            {products.map((product, index) => (
+            {products.map((product) => (
               <Link
                 key={product.id}
                 to="/products/$productId"
                 params={{ productId: product.slug }}
               >
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.15, duration: 0.5 }}
-                  className="group block"
-                >
+                <div className="group block">
                   <div className="relative overflow-hidden rounded-2xl bg-card border border-border shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-all duration-300">
                     {/* Badge */}
                     {product.badge && (
@@ -96,7 +84,7 @@ export function ProductsSection() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </Link>
             ))}
           </div>
