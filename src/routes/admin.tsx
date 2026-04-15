@@ -9,7 +9,6 @@ export const Route = createFileRoute("/admin")({
 const navItems = [
   { label: "لوحة التحكم", href: "/admin", icon: "📊" },
   { label: "المنتجات", href: "/admin/products", icon: "📦" },
-  { label: "المحتوى", href: "/admin/content", icon: "📝" },
   { label: "الرسائل", href: "/admin/messages", icon: "💬" },
   { label: "الإعدادات", href: "/admin/settings", icon: "⚙️" },
 ];
