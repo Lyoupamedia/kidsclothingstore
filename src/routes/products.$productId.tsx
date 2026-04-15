@@ -212,7 +212,7 @@ function ProductPage() {
               />
             </div>
           </div>
-        </motion.div>
+        </div>
       </main>
 
       {/* Sticky mobile CTA */}
