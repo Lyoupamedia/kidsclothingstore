@@ -79,7 +79,7 @@
 
 :root {
   --radius: 0.75rem;
-  --font-family-sans: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-family-sans: 'Noto Kufi Arabic', system-ui, sans-serif;
 
   /* Core palette - playful kids vibe */
   --background: oklch(0.98 0.01 240);
