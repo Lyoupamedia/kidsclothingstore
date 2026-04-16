@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useProduct } from "@/hooks/useProducts";
-import { useSiteSettings } from "@/hooks/useSiteSettings";
+
 import { Navbar } from "@/components/Navbar";
 import { FooterSection } from "@/components/FooterSection";
 import { supabase } from "@/integrations/supabase/client";
