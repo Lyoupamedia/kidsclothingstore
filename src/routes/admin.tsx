@@ -271,7 +271,12 @@ function OrdersPanel() {
     setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const handler = () => load();
+    window.addEventListener("orders:new", handler);
+    return () => window.removeEventListener("orders:new", handler);
+  }, []);
 
   async function updateStatus(id: string, status: string) {
     await supabase.from("orders").update({ status, is_read: true }).eq("id", id);
