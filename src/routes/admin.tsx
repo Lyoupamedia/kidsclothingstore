@@ -309,7 +309,7 @@ function OrdersPanel() {
       toast.error("لا توجد طلبات للتصدير");
       return;
     }
-    const headers = ["التاريخ", "المنتج", "السعر", "العمر", "الاسم", "الهاتف", "العنوان", "الحالة"];
+    const headers = ["التاريخ", "المنتج", "السعر", "العمر", "الاسم", "الهاتف", "المدينة", "العنوان", "الحالة"];
     const escape = (v: any) => {
       const s = String(v ?? "");
       return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
@@ -321,6 +321,7 @@ function OrdersPanel() {
       o.selected_age ?? "",
       o.customer_name,
       o.customer_phone,
+      o.city ?? "",
       o.customer_address,
       statusLabels[o.status]?.label ?? o.status,
     ]);
@@ -353,7 +354,7 @@ function OrdersPanel() {
 
     autoTable(doc, {
       startY: 28,
-      head: [["Date", "Product", "Price", "Age", "Customer", "Phone", "Address", "Status"]],
+      head: [["Date", "Product", "Price", "Age", "Customer", "Phone", "City", "Address", "Status"]],
       body: filtered.map((o) => [
         new Date(o.created_at).toLocaleDateString(),
         o.product_name,
@@ -361,12 +362,13 @@ function OrdersPanel() {
         o.selected_age ?? "-",
         o.customer_name,
         o.customer_phone,
+        o.city ?? "-",
         o.customer_address,
         statusLabels[o.status]?.label ?? o.status,
       ]),
       styles: { fontSize: 8, cellPadding: 2 },
       headStyles: { fillColor: [99, 102, 241] },
-      columnStyles: { 6: { cellWidth: 50 } },
+      columnStyles: { 7: { cellWidth: 45 } },
     });
     doc.save(`orders-${new Date().toISOString().slice(0, 10)}.pdf`);
     toast.success(`تم تصدير ${filtered.length} طلب`);
@@ -450,6 +452,9 @@ function OrdersPanel() {
                     <span className="text-muted-foreground">الهاتف: </span>
                     <a href={`tel:${order.customer_phone}`} className="font-medium text-primary hover:underline">{order.customer_phone}</a>
                   </div>
+                  {order.city && (
+                    <div><span className="text-muted-foreground">المدينة: </span><span className="font-medium text-foreground">{order.city}</span></div>
+                  )}
                   <div className="sm:col-span-3"><span className="text-muted-foreground">العنوان: </span><span className="font-medium text-foreground">{order.customer_address}</span></div>
                 </div>
 

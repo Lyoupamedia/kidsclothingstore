@@ -30,6 +30,7 @@ function ProductPage() {
   const [selectedAge, setSelectedAge] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -68,8 +69,8 @@ function ProductPage() {
     : 0;
 
   const handleOrder = async () => {
-    if (!name.trim() || !phone.trim() || !address.trim()) {
-      alert("يرجى إدخال الاسم والهاتف والعنوان");
+    if (!name.trim() || !phone.trim() || !city.trim() || !address.trim()) {
+      alert("يرجى إدخال الاسم والهاتف والمدينة والعنوان");
       return;
     }
     setSubmitting(true);
@@ -81,12 +82,14 @@ function ProductPage() {
         selected_age: selectedAge,
         customer_name: name.trim(),
         customer_phone: phone.trim(),
+        city: city.trim(),
         customer_address: address.trim(),
       });
       if (error) throw error;
       setSuccess(true);
       setName("");
       setPhone("");
+      setCity("");
       setAddress("");
       setSelectedAge(null);
     } catch (e) {
@@ -177,6 +180,13 @@ function ProductPage() {
                   className="col-span-1 w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm text-right"
                 />
               </div>
+              <input
+                type="text"
+                placeholder="المدينة"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
+              />
               <input
                 type="text"
                 placeholder="العنوان"
