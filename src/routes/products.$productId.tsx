@@ -30,6 +30,7 @@ function ProductPage() {
   const [selectedAge, setSelectedAge] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
