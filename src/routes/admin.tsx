@@ -21,17 +21,26 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
 
 // ─── Main Page ───
 function AdminPage() {
+  const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    setMounted(true);
+    let cancelled = false;
+
+    const checkAdmin = async (userId: string) => {
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle();
+      if (!cancelled) setIsAdmin(!!data);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (cancelled) return;
       if (session?.user) {
         setUser(session.user);
-        const { data } = await supabase.from("user_roles").select("role").eq("user_id", session.user.id).eq("role", "admin").maybeSingle();
-        setIsAdmin(!!data);
+        checkAdmin(session.user.id);
       } else {
         setUser(null);
         setIsAdmin(false);
@@ -39,17 +48,36 @@ function AdminPage() {
       setLoading(false);
     });
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (cancelled) return;
       if (session?.user) {
         setUser(session.user);
-        const { data } = await supabase.from("user_roles").select("role").eq("user_id", session.user.id).eq("role", "admin").maybeSingle();
-        setIsAdmin(!!data);
+        checkAdmin(session.user.id);
       }
       setLoading(false);
+    }).catch(() => {
+      if (!cancelled) setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Safety timeout
+    const timeout = setTimeout(() => {
+      if (!cancelled) setLoading(false);
+    }, 3000);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+      subscription.unsubscribe();
+    };
   }, []);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   if (loading) {
     return (
