@@ -354,7 +354,7 @@ function OrdersPanel() {
 
     autoTable(doc, {
       startY: 28,
-      head: [["Date", "Product", "Price", "Age", "Customer", "Phone", "Address", "Status"]],
+      head: [["Date", "Product", "Price", "Age", "Customer", "Phone", "City", "Address", "Status"]],
       body: filtered.map((o) => [
         new Date(o.created_at).toLocaleDateString(),
         o.product_name,
@@ -362,12 +362,13 @@ function OrdersPanel() {
         o.selected_age ?? "-",
         o.customer_name,
         o.customer_phone,
+        o.city ?? "-",
         o.customer_address,
         statusLabels[o.status]?.label ?? o.status,
       ]),
       styles: { fontSize: 8, cellPadding: 2 },
       headStyles: { fillColor: [99, 102, 241] },
-      columnStyles: { 6: { cellWidth: 50 } },
+      columnStyles: { 7: { cellWidth: 45 } },
     });
     doc.save(`orders-${new Date().toISOString().slice(0, 10)}.pdf`);
     toast.success(`تم تصدير ${filtered.length} طلب`);
