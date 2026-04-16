@@ -9,11 +9,13 @@ export const Route = createFileRoute("/admin")({
 
 type Product = Database["public"]["Tables"]["products"]["Row"];
 type Message = Database["public"]["Tables"]["contact_messages"]["Row"];
+type Order = Database["public"]["Tables"]["orders"]["Row"];
 
-type Tab = "dashboard" | "products" | "messages" | "settings";
+type Tab = "dashboard" | "orders" | "products" | "messages" | "settings";
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
   { id: "dashboard", label: "لوحة التحكم", icon: "📊" },
+  { id: "orders", label: "الطلبات", icon: "🛒" },
   { id: "products", label: "المنتجات", icon: "📦" },
   { id: "messages", label: "الرسائل", icon: "💬" },
   { id: "settings", label: "الإعدادات", icon: "⚙️" },
@@ -145,6 +147,7 @@ function AdminPage() {
       {/* Content */}
       <main className="max-w-7xl mx-auto p-4 md:p-8">
         {activeTab === "dashboard" && <DashboardPanel />}
+        {activeTab === "orders" && <OrdersPanel />}
         {activeTab === "products" && <ProductsPanel />}
         {activeTab === "messages" && <MessagesPanel />}
         {activeTab === "settings" && <SettingsPanel />}
@@ -155,19 +158,29 @@ function AdminPage() {
 
 // ─── Dashboard ───
 function DashboardPanel() {
-  const [stats, setStats] = useState({ products: 0, messages: 0, unread: 0 });
+  const [stats, setStats] = useState({ products: 0, messages: 0, unread: 0, orders: 0, newOrders: 0 });
 
   useEffect(() => {
     Promise.all([
       supabase.from("products").select("id", { count: "exact", head: true }),
       supabase.from("contact_messages").select("id", { count: "exact", head: true }),
       supabase.from("contact_messages").select("id", { count: "exact", head: true }).eq("is_read", false),
-    ]).then(([p, m, u]) => {
-      setStats({ products: p.count ?? 0, messages: m.count ?? 0, unread: u.count ?? 0 });
+      supabase.from("orders").select("id", { count: "exact", head: true }),
+      supabase.from("orders").select("id", { count: "exact", head: true }).eq("is_read", false),
+    ]).then(([p, m, u, o, no]) => {
+      setStats({
+        products: p.count ?? 0,
+        messages: m.count ?? 0,
+        unread: u.count ?? 0,
+        orders: o.count ?? 0,
+        newOrders: no.count ?? 0,
+      });
     });
   }, []);
 
   const cards = [
+    { label: "الطلبات", value: stats.orders, icon: "🛒", color: "bg-purple-500/10 text-purple-600" },
+    { label: "طلبات جديدة", value: stats.newOrders, icon: "✨", color: "bg-pink-500/10 text-pink-600" },
     { label: "المنتجات", value: stats.products, icon: "📦", color: "bg-blue-500/10 text-blue-600" },
     { label: "الرسائل", value: stats.messages, icon: "💬", color: "bg-green-500/10 text-green-600" },
     { label: "غير مقروءة", value: stats.unread, icon: "🔔", color: "bg-orange-500/10 text-orange-600" },
@@ -176,7 +189,7 @@ function DashboardPanel() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-foreground mb-6">لوحة التحكم</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {cards.map((card) => (
           <div key={card.label} className="bg-card border border-border rounded-2xl p-6">
             <span className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-4 ${card.color}`}>{card.icon}</span>
@@ -185,6 +198,144 @@ function DashboardPanel() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+// ─── Orders ───
+function OrdersPanel() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<"all" | "new" | "confirmed" | "shipped" | "delivered" | "cancelled">("all");
+
+  async function load() {
+    const { data } = await supabase.from("orders").select("*").order("created_at", { ascending: false });
+    setOrders(data ?? []);
+    setLoading(false);
+  }
+
+  useEffect(() => { load(); }, []);
+
+  async function updateStatus(id: string, status: string) {
+    await supabase.from("orders").update({ status, is_read: true }).eq("id", id);
+    load();
+  }
+
+  async function markRead(id: string) {
+    await supabase.from("orders").update({ is_read: true }).eq("id", id);
+    load();
+  }
+
+  async function remove(id: string) {
+    if (!confirm("حذف هذا الطلب؟")) return;
+    await supabase.from("orders").delete().eq("id", id);
+    load();
+  }
+
+  const filtered = filter === "all" ? orders : orders.filter((o) => o.status === filter);
+
+  const statusLabels: Record<string, { label: string; color: string }> = {
+    new: { label: "جديد", color: "bg-blue-500/10 text-blue-600" },
+    confirmed: { label: "مؤكد", color: "bg-yellow-500/10 text-yellow-700" },
+    shipped: { label: "تم الشحن", color: "bg-indigo-500/10 text-indigo-600" },
+    delivered: { label: "تم التسليم", color: "bg-green-500/10 text-green-600" },
+    cancelled: { label: "ملغي", color: "bg-red-500/10 text-red-600" },
+  };
+
+  if (loading) return <div className="text-center py-8 text-muted-foreground">جاري التحميل...</div>;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <h1 className="text-2xl font-bold text-foreground">الطلبات ({orders.length})</h1>
+        <div className="flex gap-2 flex-wrap">
+          {(["all", "new", "confirmed", "shipped", "delivered", "cancelled"] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                filter === f ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              {f === "all" ? "الكل" : statusLabels[f].label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="text-center py-12 text-muted-foreground bg-card border border-border rounded-2xl">
+          لا توجد طلبات
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {filtered.map((order) => {
+            const status = statusLabels[order.status] ?? statusLabels.new;
+            return (
+              <div
+                key={order.id}
+                className={`bg-card border rounded-2xl p-5 ${order.is_read ? "border-border" : "border-primary/40 bg-primary/5"}`}
+              >
+                <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <h3 className="font-bold text-foreground">{order.product_name}</h3>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${status.color}`}>{status.label}</span>
+                      {!order.is_read && <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-primary text-primary-foreground">جديد</span>}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {order.product_price} د.م
+                      {order.selected_age && ` · العمر: ${order.selected_age}`}
+                    </div>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {new Date(order.created_at).toLocaleString("ar-MA")}
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-3 gap-3 text-sm bg-muted/40 rounded-xl p-3 mb-3">
+                  <div><span className="text-muted-foreground">الاسم: </span><span className="font-medium text-foreground">{order.customer_name}</span></div>
+                  <div>
+                    <span className="text-muted-foreground">الهاتف: </span>
+                    <a href={`tel:${order.customer_phone}`} className="font-medium text-primary hover:underline">{order.customer_phone}</a>
+                  </div>
+                  <div className="sm:col-span-3"><span className="text-muted-foreground">العنوان: </span><span className="font-medium text-foreground">{order.customer_address}</span></div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <select
+                    value={order.status}
+                    onChange={(e) => updateStatus(order.id, e.target.value)}
+                    className="px-3 py-1.5 rounded-lg border border-border bg-background text-sm text-foreground"
+                  >
+                    <option value="new">جديد</option>
+                    <option value="confirmed">مؤكد</option>
+                    <option value="shipped">تم الشحن</option>
+                    <option value="delivered">تم التسليم</option>
+                    <option value="cancelled">ملغي</option>
+                  </select>
+                  <a
+                    href={`https://wa.me/${order.customer_phone.replace(/\D/g, "")}?text=${encodeURIComponent(`مرحباً ${order.customer_name}، بخصوص طلبك: ${order.product_name}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-700 font-medium text-sm hover:bg-green-500/20"
+                  >
+                    💬 WhatsApp
+                  </a>
+                  {!order.is_read && (
+                    <button onClick={() => markRead(order.id)} className="px-3 py-1.5 rounded-lg bg-muted text-foreground font-medium text-sm hover:bg-muted/80">
+                      ✓ تحديد كمقروء
+                    </button>
+                  )}
+                  <button onClick={() => remove(order.id)} className="px-3 py-1.5 rounded-lg bg-destructive/10 text-destructive font-medium text-sm hover:bg-destructive/20">
+                    حذف
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

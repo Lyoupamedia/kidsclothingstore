@@ -38,6 +38,59 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          created_at: string
+          customer_address: string
+          customer_name: string
+          customer_phone: string
+          id: string
+          is_read: boolean
+          product_id: string | null
+          product_name: string
+          product_price: number
+          selected_age: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_address: string
+          customer_name: string
+          customer_phone: string
+          id?: string
+          is_read?: boolean
+          product_id?: string | null
+          product_name: string
+          product_price: number
+          selected_age?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_address?: string
+          customer_name?: string
+          customer_phone?: string
+          id?: string
+          is_read?: boolean
+          product_id?: string | null
+          product_name?: string
+          product_price?: number
+          selected_age?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           ages: string[] | null
