@@ -74,6 +74,62 @@ function AdminPage() {
     };
   }, []);
 
+  // Realtime: notify on new orders
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const playDing = () => {
+      try {
+        const Ctx = (window.AudioContext || (window as any).webkitAudioContext);
+        if (!Ctx) return;
+        const ctx = new Ctx();
+        const playTone = (freq: number, start: number, duration: number) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0, ctx.currentTime + start);
+          gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + start + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(ctx.currentTime + start);
+          osc.stop(ctx.currentTime + start + duration);
+        };
+        playTone(880, 0, 0.18);
+        playTone(1175, 0.15, 0.22);
+        setTimeout(() => ctx.close(), 600);
+      } catch (e) {
+        console.warn("Audio ding failed", e);
+      }
+    };
+
+    const channel = supabase
+      .channel("admin-new-orders")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "orders" },
+        (payload) => {
+          const order = payload.new as Order;
+          playDing();
+          toast.success("🛒 طلب جديد!", {
+            description: `${order.product_name} — ${order.customer_name} (${order.customer_phone})`,
+            duration: 8000,
+            action: {
+              label: "عرض",
+              onClick: () => setActiveTab("orders"),
+            },
+          });
+          window.dispatchEvent(new CustomEvent("orders:new"));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin]);
+
+
   if (!mounted) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
