@@ -217,7 +217,7 @@ function AdminPage() {
 function DashboardPanel() {
   const [stats, setStats] = useState({ products: 0, messages: 0, unread: 0, orders: 0, newOrders: 0 });
 
-  useEffect(() => {
+  const loadStats = () => {
     Promise.all([
       supabase.from("products").select("id", { count: "exact", head: true }),
       supabase.from("contact_messages").select("id", { count: "exact", head: true }),
@@ -233,7 +233,15 @@ function DashboardPanel() {
         newOrders: no.count ?? 0,
       });
     });
+  };
+
+  useEffect(() => {
+    loadStats();
+    const handler = () => loadStats();
+    window.addEventListener("orders:new", handler);
+    return () => window.removeEventListener("orders:new", handler);
   }, []);
+
 
   const cards = [
     { label: "الطلبات", value: stats.orders, icon: "🛒", color: "bg-purple-500/10 text-purple-600" },
