@@ -4,6 +4,7 @@ import { useProduct } from "@/hooks/useProducts";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { Navbar } from "@/components/Navbar";
 import { FooterSection } from "@/components/FooterSection";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/products/$productId")({
   component: ProductPage,
