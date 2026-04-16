@@ -645,9 +645,14 @@ function MessagesPanel() {
             <div key={msg.id} className={`bg-card border rounded-xl p-5 ${msg.is_read ? "border-border" : "border-primary/30 bg-primary/5"}`}>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="font-bold text-foreground">{msg.name}</span>
                     {!msg.is_read && <span className="w-2 h-2 rounded-full bg-primary shrink-0" />}
+                    {msg.phone && (
+                      <a href={`https://wa.me/${msg.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" dir="ltr" className="text-xs text-primary hover:underline">
+                        💬 {msg.phone}
+                      </a>
+                    )}
                   </div>
                   <p className="text-foreground/80 text-sm whitespace-pre-wrap">{msg.message}</p>
                   <div className="text-xs text-muted-foreground mt-2">
