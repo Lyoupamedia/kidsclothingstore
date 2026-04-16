@@ -182,6 +182,13 @@ function ProductPage() {
               </div>
               <input
                 type="text"
+                placeholder="المدينة"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
+              />
+              <input
+                type="text"
                 placeholder="العنوان"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
