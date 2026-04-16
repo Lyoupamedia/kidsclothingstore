@@ -450,6 +450,9 @@ function OrdersPanel() {
                     <span className="text-muted-foreground">الهاتف: </span>
                     <a href={`tel:${order.customer_phone}`} className="font-medium text-primary hover:underline">{order.customer_phone}</a>
                   </div>
+                  {order.city && (
+                    <div><span className="text-muted-foreground">المدينة: </span><span className="font-medium text-foreground">{order.city}</span></div>
+                  )}
                   <div className="sm:col-span-3"><span className="text-muted-foreground">العنوان: </span><span className="font-medium text-foreground">{order.customer_address}</span></div>
                 </div>
 
