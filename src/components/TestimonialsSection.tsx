@@ -30,7 +30,7 @@ export function TestimonialsSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             ماذا يقول عملاؤنا؟
           </h2>
-          <p className="text-muted-foreground text-lg">+25,000 عميل سعيد بتجربتهم معنا</p>
+          <p className="text-muted-foreground text-lg">+5,000 عميل سعيد بتجربتهم معنا</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
