@@ -73,9 +73,9 @@ function ProductPage() {
       alert("يرجى إدخال الاسم والهاتف والعنوان");
       return;
     }
-    // Save order to DB (best-effort, don't block WhatsApp)
+    setSubmitting(true);
     try {
-      await supabase.from("orders").insert({
+      const { error } = await supabase.from("orders").insert({
         product_id: product.id,
         product_name: product.name,
         product_price: product.price,
@@ -84,13 +84,18 @@ function ProductPage() {
         customer_phone: phone.trim(),
         customer_address: address.trim(),
       });
+      if (error) throw error;
+      setSuccess(true);
+      setName("");
+      setPhone("");
+      setAddress("");
+      setSelectedAge(null);
     } catch (e) {
       console.error("Failed to save order", e);
+      alert("حدث خطأ، يرجى المحاولة مرة أخرى");
+    } finally {
+      setSubmitting(false);
     }
-    const message = encodeURIComponent(
-      `مرحباً، أريد طلب:\n${product.name}\nالعمر: ${selectedAge || "غير محدد"}\nالاسم: ${name}\nالهاتف: ${phone}\nالعنوان: ${address}`
-    );
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
   };
 
   return (
