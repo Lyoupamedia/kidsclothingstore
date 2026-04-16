@@ -160,24 +160,24 @@ function ProductPage() {
             )}
 
             {/* Order Form */}
-            <div className="bg-card rounded-2xl border-2 border-dashed border-border p-8 md:p-10 space-y-6">
-              <h3 className="text-center font-bold text-foreground text-2xl">
+            <div className="bg-card rounded-2xl border-2 border-dashed border-border p-6 space-y-4">
+              <h3 className="text-center font-bold text-foreground text-lg">
                 لإتمام الطلب أدخل المعلومات التالية
               </h3>
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
                   placeholder="الاسم الكامل"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="col-span-1 w-full px-6 py-6 rounded-2xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-lg"
+                  className="col-span-1 w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
                 />
                 <input
                   type="tel"
                   placeholder="الهاتف"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="col-span-1 w-full px-6 py-6 rounded-2xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-lg text-right"
+                  className="col-span-1 w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm text-right"
                 />
               </div>
               <input
@@ -185,14 +185,14 @@ function ProductPage() {
                 placeholder="المدينة"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full px-6 py-6 rounded-2xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-lg"
+                className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
               />
               <input
                 type="text"
                 placeholder="العنوان"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full px-6 py-6 rounded-2xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-lg"
+                className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors text-sm"
               />
             </div>
 
