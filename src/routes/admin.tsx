@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -72,6 +73,62 @@ function AdminPage() {
       subscription.unsubscribe();
     };
   }, []);
+
+  // Realtime: notify on new orders
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const playDing = () => {
+      try {
+        const Ctx = (window.AudioContext || (window as any).webkitAudioContext);
+        if (!Ctx) return;
+        const ctx = new Ctx();
+        const playTone = (freq: number, start: number, duration: number) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0, ctx.currentTime + start);
+          gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + start + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(ctx.currentTime + start);
+          osc.stop(ctx.currentTime + start + duration);
+        };
+        playTone(880, 0, 0.18);
+        playTone(1175, 0.15, 0.22);
+        setTimeout(() => ctx.close(), 600);
+      } catch (e) {
+        console.warn("Audio ding failed", e);
+      }
+    };
+
+    const channel = supabase
+      .channel("admin-new-orders")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "orders" },
+        (payload) => {
+          const order = payload.new as Order;
+          playDing();
+          toast.success("🛒 طلب جديد!", {
+            description: `${order.product_name} — ${order.customer_name} (${order.customer_phone})`,
+            duration: 8000,
+            action: {
+              label: "عرض",
+              onClick: () => setActiveTab("orders"),
+            },
+          });
+          window.dispatchEvent(new CustomEvent("orders:new"));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin]);
+
 
   if (!mounted) {
     return (
@@ -160,7 +217,7 @@ function AdminPage() {
 function DashboardPanel() {
   const [stats, setStats] = useState({ products: 0, messages: 0, unread: 0, orders: 0, newOrders: 0 });
 
-  useEffect(() => {
+  const loadStats = () => {
     Promise.all([
       supabase.from("products").select("id", { count: "exact", head: true }),
       supabase.from("contact_messages").select("id", { count: "exact", head: true }),
@@ -176,7 +233,15 @@ function DashboardPanel() {
         newOrders: no.count ?? 0,
       });
     });
+  };
+
+  useEffect(() => {
+    loadStats();
+    const handler = () => loadStats();
+    window.addEventListener("orders:new", handler);
+    return () => window.removeEventListener("orders:new", handler);
   }, []);
+
 
   const cards = [
     { label: "الطلبات", value: stats.orders, icon: "🛒", color: "bg-purple-500/10 text-purple-600" },
@@ -214,7 +279,12 @@ function OrdersPanel() {
     setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const handler = () => load();
+    window.addEventListener("orders:new", handler);
+    return () => window.removeEventListener("orders:new", handler);
+  }, []);
 
   async function updateStatus(id: string, status: string) {
     await supabase.from("orders").update({ status, is_read: true }).eq("id", id);
