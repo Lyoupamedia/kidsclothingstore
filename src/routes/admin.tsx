@@ -9,11 +9,13 @@ export const Route = createFileRoute("/admin")({
 
 type Product = Database["public"]["Tables"]["products"]["Row"];
 type Message = Database["public"]["Tables"]["contact_messages"]["Row"];
+type Order = Database["public"]["Tables"]["orders"]["Row"];
 
-type Tab = "dashboard" | "products" | "messages" | "settings";
+type Tab = "dashboard" | "orders" | "products" | "messages" | "settings";
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
   { id: "dashboard", label: "لوحة التحكم", icon: "📊" },
+  { id: "orders", label: "الطلبات", icon: "🛒" },
   { id: "products", label: "المنتجات", icon: "📦" },
   { id: "messages", label: "الرسائل", icon: "💬" },
   { id: "settings", label: "الإعدادات", icon: "⚙️" },
