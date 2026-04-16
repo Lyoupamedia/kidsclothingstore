@@ -68,7 +68,25 @@ function ProductPage() {
     ? Math.round(((product.old_price - product.price) / product.old_price) * 100)
     : 0;
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
+    if (!name.trim() || !phone.trim() || !address.trim()) {
+      alert("يرجى إدخال الاسم والهاتف والعنوان");
+      return;
+    }
+    // Save order to DB (best-effort, don't block WhatsApp)
+    try {
+      await supabase.from("orders").insert({
+        product_id: product.id,
+        product_name: product.name,
+        product_price: product.price,
+        selected_age: selectedAge,
+        customer_name: name.trim(),
+        customer_phone: phone.trim(),
+        customer_address: address.trim(),
+      });
+    } catch (e) {
+      console.error("Failed to save order", e);
+    }
     const message = encodeURIComponent(
       `مرحباً، أريد طلب:\n${product.name}\nالعمر: ${selectedAge || "غير محدد"}\nالاسم: ${name}\nالهاتف: ${phone}\nالعنوان: ${address}`
     );
