@@ -386,7 +386,20 @@ function OrdersPanel() {
     <div>
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <h1 className="text-2xl font-bold text-foreground">الطلبات ({orders.length})</h1>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap items-center">
+          <button
+            onClick={exportCSV}
+            className="px-3 py-1.5 rounded-lg bg-green-600 text-white font-medium text-sm hover:bg-green-700 transition-colors"
+          >
+            ⬇ CSV
+          </button>
+          <button
+            onClick={exportPDF}
+            className="px-3 py-1.5 rounded-lg bg-red-600 text-white font-medium text-sm hover:bg-red-700 transition-colors"
+          >
+            ⬇ PDF
+          </button>
+          <div className="w-px h-6 bg-border mx-1" />
           {(["all", "new", "confirmed", "shipped", "delivered", "cancelled"] as const).map((f) => (
             <button
               key={f}
