@@ -69,8 +69,8 @@ function ProductPage() {
     : 0;
 
   const handleOrder = async () => {
-    if (!name.trim() || !phone.trim() || !address.trim()) {
-      alert("يرجى إدخال الاسم والهاتف والعنوان");
+    if (!name.trim() || !phone.trim() || !city.trim() || !address.trim()) {
+      alert("يرجى إدخال الاسم والهاتف والمدينة والعنوان");
       return;
     }
     setSubmitting(true);
@@ -82,12 +82,14 @@ function ProductPage() {
         selected_age: selectedAge,
         customer_name: name.trim(),
         customer_phone: phone.trim(),
+        city: city.trim(),
         customer_address: address.trim(),
       });
       if (error) throw error;
       setSuccess(true);
       setName("");
       setPhone("");
+      setCity("");
       setAddress("");
       setSelectedAge(null);
     } catch (e) {
