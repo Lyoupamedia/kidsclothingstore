@@ -304,6 +304,74 @@ function OrdersPanel() {
 
   const filtered = filter === "all" ? orders : orders.filter((o) => o.status === filter);
 
+  function exportCSV() {
+    if (filtered.length === 0) {
+      toast.error("لا توجد طلبات للتصدير");
+      return;
+    }
+    const headers = ["التاريخ", "المنتج", "السعر", "العمر", "الاسم", "الهاتف", "العنوان", "الحالة"];
+    const escape = (v: any) => {
+      const s = String(v ?? "");
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const rows = filtered.map((o) => [
+      new Date(o.created_at).toLocaleString("ar-MA"),
+      o.product_name,
+      o.product_price,
+      o.selected_age ?? "",
+      o.customer_name,
+      o.customer_phone,
+      o.customer_address,
+      statusLabels[o.status]?.label ?? o.status,
+    ]);
+    const csv = "\uFEFF" + [headers, ...rows].map((r) => r.map(escape).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`تم تصدير ${filtered.length} طلب`);
+  }
+
+  async function exportPDF() {
+    if (filtered.length === 0) {
+      toast.error("لا توجد طلبات للتصدير");
+      return;
+    }
+    const [{ default: jsPDF }, autoTableMod] = await Promise.all([
+      import("jspdf"),
+      import("jspdf-autotable"),
+    ]);
+    const autoTable = (autoTableMod as any).default ?? autoTableMod;
+    const doc = new jsPDF({ orientation: "landscape" });
+    doc.setFontSize(14);
+    doc.text("Orders Report", 14, 15);
+    doc.setFontSize(10);
+    doc.text(`Generated: ${new Date().toLocaleString()}  |  Total: ${filtered.length}`, 14, 22);
+
+    autoTable(doc, {
+      startY: 28,
+      head: [["Date", "Product", "Price", "Age", "Customer", "Phone", "Address", "Status"]],
+      body: filtered.map((o) => [
+        new Date(o.created_at).toLocaleDateString(),
+        o.product_name,
+        `${o.product_price} MAD`,
+        o.selected_age ?? "-",
+        o.customer_name,
+        o.customer_phone,
+        o.customer_address,
+        statusLabels[o.status]?.label ?? o.status,
+      ]),
+      styles: { fontSize: 8, cellPadding: 2 },
+      headStyles: { fillColor: [99, 102, 241] },
+      columnStyles: { 6: { cellWidth: 50 } },
+    });
+    doc.save(`orders-${new Date().toISOString().slice(0, 10)}.pdf`);
+    toast.success(`تم تصدير ${filtered.length} طلب`);
+  }
+
   const statusLabels: Record<string, { label: string; color: string }> = {
     new: { label: "جديد", color: "bg-blue-500/10 text-blue-600" },
     confirmed: { label: "مؤكد", color: "bg-yellow-500/10 text-yellow-700" },
@@ -318,7 +386,20 @@ function OrdersPanel() {
     <div>
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <h1 className="text-2xl font-bold text-foreground">الطلبات ({orders.length})</h1>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap items-center">
+          <button
+            onClick={exportCSV}
+            className="px-3 py-1.5 rounded-lg bg-green-600 text-white font-medium text-sm hover:bg-green-700 transition-colors"
+          >
+            ⬇ CSV
+          </button>
+          <button
+            onClick={exportPDF}
+            className="px-3 py-1.5 rounded-lg bg-red-600 text-white font-medium text-sm hover:bg-red-700 transition-colors"
+          >
+            ⬇ PDF
+          </button>
+          <div className="w-px h-6 bg-border mx-1" />
           {(["all", "new", "confirmed", "shipped", "delivered", "cancelled"] as const).map((f) => (
             <button
               key={f}
