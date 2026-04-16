@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useProduct } from "@/hooks/useProducts";
-import { useSiteSettings } from "@/hooks/useSiteSettings";
+
 import { Navbar } from "@/components/Navbar";
 import { FooterSection } from "@/components/FooterSection";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,13 +27,12 @@ export const Route = createFileRoute("/products/$productId")({
 function ProductPage() {
   const { productId } = Route.useParams();
   const { product, loading } = useProduct(productId);
-  const { settings } = useSiteSettings();
   const [selectedAge, setSelectedAge] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
-  const whatsappNumber = settings.whatsapp_number || "212672492366";
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   if (loading) {
     return (
@@ -73,9 +72,9 @@ function ProductPage() {
       alert("يرجى إدخال الاسم والهاتف والعنوان");
       return;
     }
-    // Save order to DB (best-effort, don't block WhatsApp)
+    setSubmitting(true);
     try {
-      await supabase.from("orders").insert({
+      const { error } = await supabase.from("orders").insert({
         product_id: product.id,
         product_name: product.name,
         product_price: product.price,
@@ -84,13 +83,18 @@ function ProductPage() {
         customer_phone: phone.trim(),
         customer_address: address.trim(),
       });
+      if (error) throw error;
+      setSuccess(true);
+      setName("");
+      setPhone("");
+      setAddress("");
+      setSelectedAge(null);
     } catch (e) {
       console.error("Failed to save order", e);
+      alert("حدث خطأ، يرجى المحاولة مرة أخرى");
+    } finally {
+      setSubmitting(false);
     }
-    const message = encodeURIComponent(
-      `مرحباً، أريد طلب:\n${product.name}\nالعمر: ${selectedAge || "غير محدد"}\nالاسم: ${name}\nالهاتف: ${phone}\nالعنوان: ${address}`
-    );
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
   };
 
   return (
@@ -183,13 +187,20 @@ function ProductPage() {
             </div>
 
             {/* CTA Button */}
-            <button
-              onClick={handleOrder}
-              className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              أطلب الآن
-            </button>
+            {success ? (
+              <div className="w-full py-4 rounded-xl bg-green-500/10 text-green-700 dark:text-green-400 font-bold text-center border-2 border-green-500/30">
+                ✓ تم استلام طلبك بنجاح، سنتواصل معك قريباً
+              </div>
+            ) : (
+              <button
+                onClick={handleOrder}
+                disabled={submitting}
+                className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                {submitting ? "جاري الإرسال..." : "أطلب الآن"}
+              </button>
+            )}
           </div>
 
           {/* Product Image */}
@@ -214,15 +225,18 @@ function ProductPage() {
       </main>
 
       {/* Sticky mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 md:hidden p-3 bg-background/80 backdrop-blur-lg border-t border-border z-50">
-        <button
-          onClick={handleOrder}
-          className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-base flex items-center justify-center gap-2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-          أطلب الآن
-        </button>
-      </div>
+      {!success && (
+        <div className="fixed bottom-0 left-0 right-0 md:hidden p-3 bg-background/80 backdrop-blur-lg border-t border-border z-50">
+          <button
+            onClick={handleOrder}
+            disabled={submitting}
+            className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-base flex items-center justify-center gap-2 disabled:opacity-60"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            {submitting ? "جاري الإرسال..." : "أطلب الآن"}
+          </button>
+        </div>
+      )}
 
       <FooterSection />
     </div>
