@@ -226,15 +226,18 @@ function ProductPage() {
       </main>
 
       {/* Sticky mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 md:hidden p-3 bg-background/80 backdrop-blur-lg border-t border-border z-50">
-        <button
-          onClick={handleOrder}
-          className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-base flex items-center justify-center gap-2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-          أطلب الآن
-        </button>
-      </div>
+      {!success && (
+        <div className="fixed bottom-0 left-0 right-0 md:hidden p-3 bg-background/80 backdrop-blur-lg border-t border-border z-50">
+          <button
+            onClick={handleOrder}
+            disabled={submitting}
+            className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold text-base flex items-center justify-center gap-2 disabled:opacity-60"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            {submitting ? "جاري الإرسال..." : "أطلب الآن"}
+          </button>
+        </div>
+      )}
 
       <FooterSection />
     </div>
