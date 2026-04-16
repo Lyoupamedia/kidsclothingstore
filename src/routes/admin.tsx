@@ -465,14 +465,6 @@ function OrdersPanel() {
                     <option value="delivered">تم التسليم</option>
                     <option value="cancelled">ملغي</option>
                   </select>
-                  <a
-                    href={`https://wa.me/${order.customer_phone.replace(/\D/g, "")}?text=${encodeURIComponent(`مرحباً ${order.customer_name}، بخصوص طلبك: ${order.product_name}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-700 font-medium text-sm hover:bg-green-500/20"
-                  >
-                    💬 WhatsApp
-                  </a>
                   {!order.is_read && (
                     <button onClick={() => markRead(order.id)} className="px-3 py-1.5 rounded-lg bg-muted text-foreground font-medium text-sm hover:bg-muted/80">
                       ✓ تحديد كمقروء
