@@ -27,7 +27,6 @@ export const Route = createFileRoute("/products/$productId")({
 function ProductPage() {
   const { productId } = Route.useParams();
   const { product, loading } = useProduct(productId);
-  const { settings } = useSiteSettings();
   const [selectedAge, setSelectedAge] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
