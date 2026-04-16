@@ -32,8 +32,8 @@ function ProductPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
-  const whatsappNumber = settings.whatsapp_number || "212672492366";
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   if (loading) {
     return (
