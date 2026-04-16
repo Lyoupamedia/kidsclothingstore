@@ -309,7 +309,7 @@ function OrdersPanel() {
       toast.error("لا توجد طلبات للتصدير");
       return;
     }
-    const headers = ["التاريخ", "المنتج", "السعر", "العمر", "الاسم", "الهاتف", "العنوان", "الحالة"];
+    const headers = ["التاريخ", "المنتج", "السعر", "العمر", "الاسم", "الهاتف", "المدينة", "العنوان", "الحالة"];
     const escape = (v: any) => {
       const s = String(v ?? "");
       return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
@@ -321,6 +321,7 @@ function OrdersPanel() {
       o.selected_age ?? "",
       o.customer_name,
       o.customer_phone,
+      o.city ?? "",
       o.customer_address,
       statusLabels[o.status]?.label ?? o.status,
     ]);
