@@ -15,7 +15,7 @@ export function FooterSection() {
           {/* Brand */}
           <div>
             <div className="flex items-center mb-4">
-              <span className="text-2xl font-bold text-primary">KidsClothing</span>
+              <span className="text-2xl font-bold"><span className="text-primary">Kids</span><span className="text-background">Clothing</span></span>
             </div>
             <p className="text-background/60 mb-6 leading-relaxed">
               متجر متخصص في ملابس الأطفال بجودة عالية وأسعار مناسبة. شحن مجاني لجميع أنحاء المملكة.
