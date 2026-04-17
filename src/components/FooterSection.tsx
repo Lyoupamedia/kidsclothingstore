@@ -14,9 +14,8 @@ export function FooterSection() {
         <div className="grid md:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl font-bold text-primary">Kids</span>
-              <span className="text-2xl font-bold text-background">Clothing</span>
+            <div className="flex items-center mb-4">
+              <span className="text-2xl font-bold text-primary">KidsClothing</span>
             </div>
             <p className="text-background/60 mb-6 leading-relaxed">
               متجر متخصص في ملابس الأطفال بجودة عالية وأسعار مناسبة. شحن مجاني لجميع أنحاء المملكة.
