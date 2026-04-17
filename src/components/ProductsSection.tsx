@@ -22,7 +22,7 @@ export function ProductsSection() {
 
         {/* Loading skeleton */}
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="rounded-2xl bg-card border border-border animate-pulse">
                 <div className="aspect-square bg-muted rounded-t-2xl" />
@@ -36,7 +36,7 @@ export function ProductsSection() {
           </div>
         ) : (
           /* Products grid */
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             {products.map((product) => (
               <Link
                 key={product.id}
