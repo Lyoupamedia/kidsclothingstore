@@ -1,0 +1,4 @@
+UPDATE public.products SET image_url = 'https://qbyqdnufvvnntdisjduy.supabase.co/storage/v1/object/public/product-images/romper.jpg' WHERE slug = 'romper';
+UPDATE public.products SET image_url = 'https://qbyqdnufvvnntdisjduy.supabase.co/storage/v1/object/public/product-images/dress.jpg' WHERE slug = 'dress';
+UPDATE public.products SET image_url = 'https://qbyqdnufvvnntdisjduy.supabase.co/storage/v1/object/public/product-images/casual.jpg' WHERE slug = 'casual';
+UPDATE public.products SET image_url = 'https://qbyqdnufvvnntdisjduy.supabase.co/storage/v1/object/public/product-images/fashion.jpg' WHERE slug = 'fashion';
