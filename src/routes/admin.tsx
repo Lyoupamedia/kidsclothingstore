@@ -743,6 +743,7 @@ function SettingsPanel() {
       </div>
       <div className="space-y-6 max-w-2xl">
         <SettingsGroup title="محتوى الصفحة الرئيسية" icon="📝" fields={contentFields} settings={settings} onChange={handleChange} />
+        <SettingsGroup title="العد التنازلي" icon="⏰" fields={countdownFields} settings={settings} onChange={handleChange} />
         <SettingsGroup title="معلومات التواصل" icon="📞" fields={contactFields} settings={settings} onChange={handleChange} />
         <button onClick={handleSave} disabled={saving} className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-bold disabled:opacity-50">
           {saving ? "جاري الحفظ..." : "حفظ الإعدادات"}
