@@ -690,7 +690,6 @@ const contentFields = [
   { key: "hero_subtitle", label: "النص الترويجي", type: "textarea", placeholder: "اكتشف مجموعتنا الحصرية..." },
   { key: "hero_badge", label: "شارة البطل", type: "text", placeholder: "+5,000 عميل راضٍ عنا" },
   { key: "shipping_text", label: "نص الشحن", type: "text", placeholder: "شحن مجاني" },
-  { key: "announcement_text", label: "نص الإعلان العلوي", type: "text", placeholder: "عرض خاص: شحن مجاني..." },
 ];
 
 const countdownFields = [
