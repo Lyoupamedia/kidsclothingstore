@@ -691,8 +691,15 @@ const contentFields = [
   { key: "hero_badge", label: "شارة البطل", type: "text", placeholder: "+5,000 عميل راضٍ عنا" },
   { key: "shipping_text", label: "نص الشحن", type: "text", placeholder: "شحن مجاني" },
   { key: "announcement_text", label: "نص الإعلان العلوي", type: "text", placeholder: "عرض خاص: شحن مجاني..." },
+];
+
+const countdownFields = [
+  { key: "countdown_enabled", label: "تفعيل العد التنازلي (true / false)", type: "text", placeholder: "true" },
   { key: "countdown_title", label: "عنوان العد التنازلي", type: "text", placeholder: "لا تفوّت الفرصة!" },
   { key: "countdown_subtitle", label: "نص العد التنازلي", type: "text", placeholder: "تخفيضات حصرية تنتهي اليوم" },
+  { key: "countdown_mode", label: "النمط: daily (ينتهي يومياً) أو fixed (تاريخ محدد)", type: "text", placeholder: "daily" },
+  { key: "countdown_end_at", label: "تاريخ الانتهاء (للنمط fixed) — مثال: 2026-12-31T23:59", type: "text", placeholder: "2026-12-31T23:59" },
+  { key: "countdown_cta_text", label: "نص زر الدعوة", type: "text", placeholder: "تسوق الآن قبل انتهاء العرض" },
 ];
 
 function SettingsPanel() {
