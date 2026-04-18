@@ -2,25 +2,36 @@ import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
-function useCountdown() {
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+function useCountdown(targetMs: number | null, mode: "daily" | "fixed") {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, ended: false });
 
   useEffect(() => {
     function getTimeLeft() {
       const now = new Date();
-      const endOfDay = new Date(now);
-      endOfDay.setHours(23, 59, 59, 999);
-      const diff = endOfDay.getTime() - now.getTime();
+      let target: number;
+      if (mode === "fixed" && targetMs) {
+        target = targetMs;
+      } else {
+        const endOfDay = new Date(now);
+        endOfDay.setHours(23, 59, 59, 999);
+        target = endOfDay.getTime();
+      }
+      const diff = target - now.getTime();
+      if (diff <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0, ended: true };
+      }
       return {
-        hours: Math.floor(diff / (1000 * 60 * 60)),
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((diff / (1000 * 60)) % 60),
         seconds: Math.floor((diff / 1000) % 60),
+        ended: false,
       };
     }
     setTimeLeft(getTimeLeft());
     const interval = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [targetMs, mode]);
 
   return timeLeft;
 }
@@ -37,11 +48,22 @@ function TimeBox({ value, label }: { value: number; label: string }) {
 }
 
 export function CountdownSection() {
-  const { hours, minutes, seconds } = useCountdown();
   const { settings } = useSiteSettings();
+
+  const enabled = (settings.countdown_enabled ?? "true").toLowerCase() !== "false";
+  const mode: "daily" | "fixed" = settings.countdown_mode === "fixed" ? "fixed" : "daily";
+  const endAtRaw = settings.countdown_end_at;
+  const targetMs = endAtRaw ? new Date(endAtRaw).getTime() : null;
+  const validTarget = targetMs && !isNaN(targetMs) ? targetMs : null;
+
+  const { days, hours, minutes, seconds, ended } = useCountdown(validTarget, mode);
+
+  if (!enabled) return null;
+  if (mode === "fixed" && ended) return null;
 
   const title = settings.countdown_title || "لا تفوّت الفرصة!";
   const subtitle = settings.countdown_subtitle || "تخفيضات حصرية تنتهي اليوم — استفد قبل فوات الأوان";
+  const ctaText = settings.countdown_cta_text || "تسوق الآن قبل انتهاء العرض";
 
   return (
     <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
@@ -63,6 +85,12 @@ export function CountdownSection() {
         </p>
 
         <div className="flex items-center justify-center gap-3 md:gap-5 mb-8" dir="ltr">
+          {mode === "fixed" && days > 0 && (
+            <>
+              <TimeBox value={days} label="يوم" />
+              <span className="text-primary-foreground text-3xl font-bold mb-4">:</span>
+            </>
+          )}
           <TimeBox value={hours} label="ساعة" />
           <span className="text-primary-foreground text-3xl font-bold mb-4">:</span>
           <TimeBox value={minutes} label="دقيقة" />
@@ -74,7 +102,7 @@ export function CountdownSection() {
           to="/products"
           className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-background text-primary font-bold text-lg shadow-[var(--shadow-elevated)] hover:scale-105 transition-transform"
         >
-          تسوق الآن قبل انتهاء العرض
+          {ctaText}
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </Link>
       </div>
